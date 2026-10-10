@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Eliminar {{ tipo }}{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+  <div class="confirmacion">
+    <h1>¿Eliminar {{ tipo }}?</h1>
+    <p>Se eliminará <span class="nombre-objeto">«{{ object.nombre }}»</span>. Esta acción no se puede deshacer.</p>
+
+    {# Solo las categorías tienen servicios asociados: si hay, el sistema bloquea el borrado #}
+    {% with cantidad=object.servicios.count %}
+    {% if cantidad %}
+    <p class="aviso"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+      Esta categoría tiene {{ cantidad }} servicio{{ cantidad|pluralize }} asociado{{ cantidad|pluralize }}.
+      Mientras existan, el sistema no permitirá eliminarla.</p>
+    {% endif %}
+    {% endwith %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-peligro"><i class="bi bi-trash" aria-hidden="true"></i> Sí, eliminar</button>
+        <a class="btn" href="{% if seccion == 'categorias' %}{% url 'servicios:panel_categorias' %}{% else %}{% url 'servicios:panel_servicios' %}{% endif %}">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

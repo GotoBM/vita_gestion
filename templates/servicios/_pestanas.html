@@ -1,0 +1,8 @@
+<nav class="pestanas" aria-label="Secciones de gestión">
+  {% if perms.servicios.view_servicio %}
+  <a href="{% url 'servicios:panel_servicios' %}"{% if seccion == 'servicios' %} aria-current="page"{% endif %}>Servicios</a>
+  {% endif %}
+  {% if perms.servicios.view_categoria %}
+  <a href="{% url 'servicios:panel_categorias' %}"{% if seccion == 'categorias' %} aria-current="page"{% endif %}>Categorías</a>
+  {% endif %}
+</nav>

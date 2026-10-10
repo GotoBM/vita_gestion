@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Gestión de servicios{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+
+  <div class="panel-titulo">
+    <h1>Gestión de servicios</h1>
+    {% if perms.servicios.add_servicio %}
+    <a class="btn btn-primario" href="{% url 'servicios:servicio_crear' %}">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Crear servicio
+    </a>
+    {% endif %}
+  </div>
+
+  {% include 'servicios/_pestanas.html' %}
+
+  <form class="buscador" method="get" role="search">
+    <div class="campo-grupo crece">
+      <label for="q">Buscar por nombre, descripción o categoría</label>
+      <input type="search" id="q" name="q" value="{{ q }}">
+    </div>
+    <button type="submit" class="btn btn-primario"><i class="bi bi-search" aria-hidden="true"></i> Buscar</button>
+    {% if q %}<a class="btn" href="{% url 'servicios:panel_servicios' %}">Limpiar</a>{% endif %}
+  </form>
+
+  {% if servicios %}
+  <div class="tabla-scroll">
+    <table class="tabla">
+      <caption class="visualmente-oculto">Lista de servicios</caption>
+      <thead>
+        <tr>
+          <th scope="col">Servicio</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Estado</th>
+          <th scope="col" class="col-acciones"><span class="visualmente-oculto">Acciones</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for servicio in servicios %}
+        <tr>
+          <th scope="row">{{ servicio.nombre }}</th>
+          <td>{{ servicio.categoria.nombre }}</td>
+          <td>
+            {% if servicio.activo %}<span class="etiqueta">Activo</span>{% else %}<span class="etiqueta inactivo">Inactivo</span>{% endif %}
+            {% if servicio.destacado %}<span class="etiqueta destacado"><i class="bi bi-star-fill" aria-hidden="true"></i> Destacado</span>{% endif %}
+          </td>
+          <td class="col-acciones">
+            <div class="acciones-fila">
+              {% if perms.servicios.change_servicio %}
+              <a class="btn-icono" href="{% url 'servicios:servicio_editar' servicio.pk %}"
+                 aria-label="Editar el servicio {{ servicio.nombre }}" title="Editar">
+                <i class="bi bi-pencil-square" aria-hidden="true"></i>
+              </a>
+              {% endif %}
+              {% if perms.servicios.delete_servicio %}
+              <a class="btn-icono peligro" href="{% url 'servicios:servicio_eliminar' servicio.pk %}"
+                 aria-label="Eliminar el servicio {{ servicio.nombre }}" title="Eliminar">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="estado-vacio">
+    {% if q %}
+    <p>No hay servicios que coincidan con «{{ q }}».</p>
+    <a class="btn" href="{% url 'servicios:panel_servicios' %}">Ver todos</a>
+    {% else %}
+    <p>Todavía no hay servicios registrados.</p>
+    {% if perms.servicios.add_servicio %}<a class="btn btn-primario" href="{% url 'servicios:servicio_crear' %}">Crear el primer servicio</a>{% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{% if object %}Editar categoría{% else %}Crear categoría{% endif %}{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+  <a class="volver" href="{% url 'servicios:panel_categorias' %}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Volver a categorías</a>
+  <h1>{% if object %}Editar categoría{% else %}Crear categoría{% endif %}</h1>
+
+  <form class="formulario-caja" method="post" novalidate>
+    {% csrf_token %}
+    {% include 'servicios/_errores.html' with errores=form.non_field_errors %}
+    {% for campo in form %}{% include 'servicios/_campo.html' %}{% endfor %}
+    <div class="acciones-formulario">
+      <button type="submit" class="btn btn-primario">{% if object %}Guardar cambios{% else %}Crear categoría{% endif %}</button>
+      <a class="btn" href="{% url 'servicios:panel_categorias' %}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

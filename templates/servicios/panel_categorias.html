@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Gestión de categorías{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+
+  <div class="panel-titulo">
+    <h1>Gestión de categorías</h1>
+    {% if perms.servicios.add_categoria %}
+    <a class="btn btn-primario" href="{% url 'servicios:categoria_crear' %}">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Crear categoría
+    </a>
+    {% endif %}
+  </div>
+
+  {% include 'servicios/_pestanas.html' %}
+
+  <form class="buscador" method="get" role="search">
+    <div class="campo-grupo crece">
+      <label for="q">Buscar por nombre o descripción</label>
+      <input type="search" id="q" name="q" value="{{ q }}">
+    </div>
+    <button type="submit" class="btn btn-primario"><i class="bi bi-search" aria-hidden="true"></i> Buscar</button>
+    {% if q %}<a class="btn" href="{% url 'servicios:panel_categorias' %}">Limpiar</a>{% endif %}
+  </form>
+
+  {% if categorias %}
+  <div class="tabla-scroll">
+    <table class="tabla">
+      <caption class="visualmente-oculto">Lista de categorías</caption>
+      <thead>
+        <tr>
+          <th scope="col">Categoría</th>
+          <th scope="col">Descripción</th>
+          <th scope="col" class="num">Orden</th>
+          <th scope="col" class="num">Servicios</th>
+          <th scope="col">Estado</th>
+          <th scope="col" class="col-acciones"><span class="visualmente-oculto">Acciones</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for categoria in categorias %}
+        <tr>
+          <th scope="row">{{ categoria.nombre }}</th>
+          <td class="descripcion">{{ categoria.descripcion }}</td>
+          <td class="num">{{ categoria.orden }}</td>
+          <td class="num">{{ categoria.num_servicios }}</td>
+          <td>{% if categoria.activa %}<span class="etiqueta">Activa</span>{% else %}<span class="etiqueta inactivo">Inactiva</span>{% endif %}</td>
+          <td class="col-acciones">
+            <div class="acciones-fila">
+              {% if perms.servicios.change_categoria %}
+              <a class="btn-icono" href="{% url 'servicios:categoria_editar' categoria.pk %}"
+                 aria-label="Editar la categoría {{ categoria.nombre }}" title="Editar">
+                <i class="bi bi-pencil-square" aria-hidden="true"></i>
+              </a>
+              {% endif %}
+              {% if perms.servicios.delete_categoria %}
+              <a class="btn-icono peligro" href="{% url 'servicios:categoria_eliminar' categoria.pk %}"
+                 aria-label="Eliminar la categoría {{ categoria.nombre }}" title="Eliminar">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="estado-vacio">
+    {% if q %}
+    <p>No hay categorías que coincidan con «{{ q }}».</p>
+    <a class="btn" href="{% url 'servicios:panel_categorias' %}">Ver todas</a>
+    {% else %}
+    <p>Todavía no hay categorías registradas.</p>
+    {% if perms.servicios.add_categoria %}<a class="btn btn-primario" href="{% url 'servicios:categoria_crear' %}">Crear la primera categoría</a>{% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

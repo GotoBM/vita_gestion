@@ -1,0 +1,17 @@
+# Entorno virtual
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Base de datos local (se recrea con migrate, cargar_datos y createsuperuser)
+db.sqlite3
+
+# Editor y variables locales
+.vscode/
+.env
+
+# Material de otra unidad (informes y PDFs), no pertenece al proyecto
+u3/

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Sin permisos{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+  <div class="confirmacion">
+    <h1>No tiene permisos para esta acción</h1>
+    <p>
+      {% if user.is_authenticated %}
+      La cuenta <strong>{{ user.get_username }}</strong> no tiene permisos para gestionar este contenido.
+      Si necesita acceso, solicítelo a un administrador.
+      {% else %}
+      Inicie sesión con una cuenta autorizada para continuar.
+      {% endif %}
+    </p>
+    <div class="acciones-formulario">
+      <a class="btn btn-primario" href="{% url 'servicios:inicio' %}">Volver al inicio</a>
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'salir' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Cambiar de cuenta</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

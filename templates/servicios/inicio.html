@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+{# ---------- Portada ---------- #}
+<section class="hero" aria-labelledby="titulo-portada">
+  <div class="contenedor">
+    <img class="hero-logo" src="{% static 'img/logo-vita.png' %}"
+         alt="Vita Gestión, administración de comunidades" width="1080" height="306">
+    <h1 id="titulo-portada">Administración Profesional de Comunidades</h1>
+    <p class="hero-sub">Soluciones tecnológicas especializadas para la administración moderna de comunidades</p>
+    <div class="hero-acciones">
+      <a class="btn btn-primario" href="{% url 'servicios:catalogo' %}">Ver servicios</a>
+      <a class="btn" href="#contacto">Contáctenos</a>
+    </div>
+  </div>
+</section>
+
+{# ---------- Pilares ---------- #}
+<section class="banda banda-solida" aria-label="Pilares del servicio">
+  <div class="contenedor">
+    <div class="pilares">
+      <div class="pilar">
+        <img src="{% static 'img/icono-transparencia.png' %}" alt="" width="122" height="110">
+        <span class="pastilla">Transparencia financiera</span>
+        <p>En tiempo real para propietarios y residentes</p>
+      </div>
+      <div class="pilar">
+        <img src="{% static 'img/icono-comunicacion.png' %}" alt="" width="122" height="150">
+        <span class="pastilla">Comunicación directa</span>
+        <p>Atención con altos estándares de servicio</p>
+      </div>
+      <div class="pilar">
+        <img src="{% static 'img/icono-eficiencia.png' %}" alt="" width="123" height="161">
+        <span class="pastilla">Eficencia operativa</span>
+        <p>Mediante herramientas tecnólogicas especializadas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- Misión y visión ---------- #}
+<section class="banda banda-degradado" aria-label="Misión y visión">
+  <div class="contenedor mision-vision">
+    <div>
+      <article>
+        <h2>Misión</h2>
+        <p>Entregar un servicio de administración de comunidades profesional, transparente y eficiente, apoyado en soluciones tecnológicas especializadas que fortalezcan la gestión financiera, operativa y comunicacional, generando confianza y valor para propietarios, residentes y comités.</p>
+      </article>
+      <article>
+        <h2>Visión</h2>
+        <p>Ser una empresa referente en la administración moderna de comunidades, reconocida por su excelencia operacional, innovación tecnológica y compromiso con una gestión cercana, confiable y de altos estándares de servicio.</p>
+      </article>
+    </div>
+    <img class="foto-vertical" src="{% static 'img/escalera.jpg' %}" alt="" width="760" height="1109" loading="lazy">
+  </div>
+</section>
+
+{# ---------- Equipo ---------- #}
+<section class="banda banda-solida" id="equipo" aria-labelledby="titulo-equipo">
+  <div class="contenedor">
+    <h2 id="titulo-equipo">Equipo</h2>
+    <div class="equipo">
+      <article class="integrante">
+        <img src="{% static 'img/equipo-pablo-rivera.jpg' %}" alt="Retrato de Pablo Rivera Núñez" width="640" height="601" loading="lazy">
+        <h3>Pablo Rivera Núñez</h3>
+        <ul>
+          <li>Administrador de empresas</li>
+          <li>mención Recursos Humanos</li>
+          <li>IACC</li>
+          <li>Registro Nacional de Administradores vigente</li>
+        </ul>
+      </article>
+      <article class="integrante">
+        <img src="{% static 'img/equipo-javier-castro.jpg' %}" alt="Retrato de Javier Castro Abumohor" width="640" height="640" loading="lazy">
+        <h3>Javier Castro Abumohor</h3>
+        <ul>
+          <li>Administrador de empresas</li>
+          <li>mención Marketing</li>
+          <li>Inacap</li>
+          <li>Registro Nacional de Administradores vigente</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+{# ---------- Beneficios ---------- #}
+<section class="banda banda-degradado" aria-labelledby="titulo-beneficios">
+  <div class="contenedor">
+    <h2 id="titulo-beneficios">Beneficios para la comunidad</h2>
+    <ul class="lista-beneficios">
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Mayor transparencia en todas las áreas de gestión</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Procesos mas rápidos y ordenados</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Mejor comunicación con propietarios, residentes y comité</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Trazabilidad completa de acciones y decisiones</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Herramientas líderes del mercado con soporte profesional</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Seguridad y respaldo de la información</span></li>
+      <li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Flexibilidad en el uso de plataforma de administración de la comunidad</span></li>
+    </ul>
+  </div>
+</section>
+
+{# ---------- Servicios destacados (desde la base de datos) y herramientas ---------- #}
+<section class="banda banda-solida" aria-labelledby="titulo-destacados">
+  <div class="contenedor destacados-grid">
+    <div>
+      <h2 id="titulo-destacados">Servicios destacados</h2>
+      {% if destacados %}
+      <ul class="lista-destacados">
+        {% for servicio in destacados %}
+        <li class="destacado">
+          <strong>{{ servicio.nombre }}</strong>
+          <span>{{ servicio.categoria.nombre }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="vacio">Aún no hay servicios destacados.</p>
+      {% endif %}
+      <a class="btn" href="{% url 'servicios:catalogo' %}">Ver todos los servicios</a>
+    </div>
+    <div class="herramientas">
+      <img src="{% static 'img/logo-comunidadfeliz.png' %}" alt="Comunidad Feliz" width="747" height="87" loading="lazy">
+      <img src="{% static 'img/logo-swappi.png' %}" alt="Swappi de Comunidad Feliz" width="663" height="156" loading="lazy">
+    </div>
+  </div>
+</section>
+
+{# ---------- Metodología ---------- #}
+<section class="banda banda-degradado" aria-labelledby="titulo-metodologia">
+  <div class="contenedor">
+    <h2 id="titulo-metodologia">Metodología de implementación</h2>
+    <ol class="pasos">
+      <li>
+        <h3>Evaluación</h3>
+        <p>Visita técnica y análisis de necesidades (1 semana)</p>
+      </li>
+      <li>
+        <h3>Propuesta</h3>
+        <p>Cotización personalizada sin compromiso (dentro del tiempo de evaluación)</p>
+      </li>
+      <li>
+        <h3>Implementación</h3>
+        <p>Transición gradual y planificada (4 semanas)</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+{# ---------- Contacto ---------- #}
+<section class="banda banda-solida" id="contacto" aria-labelledby="titulo-contacto">
+  <div class="contenedor">
+    <h2 id="titulo-contacto" class="contacto-titulo">¿listos para transformar su comunidad?</h2>
+    <p class="subtitulo-contacto">Contáctenos hoy mismo</p>
+    <div class="contactos">
+      <div>
+        <h3>Pablo Rivera N.</h3>
+        <ul>
+          <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:pablo@vitagestion.com">pablo@vitagestion.com</a></li>
+          <li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:+56939477342">+56 9 3947 7342</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Javier Castro A.</h3>
+        <ul>
+          <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:javier@vitagestion.com">javier@vitagestion.com</a></li>
+          <li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:+56974951894">+56 9 7495 1894</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

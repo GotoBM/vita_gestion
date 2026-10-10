@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{% if object %}Editar servicio{% else %}Crear servicio{% endif %}{% endblock %}
+
+{% block contenido %}
+<div class="contenedor panel">
+  <a class="volver" href="{% url 'servicios:panel_servicios' %}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Volver a servicios</a>
+  <h1>{% if object %}Editar servicio{% else %}Crear servicio{% endif %}</h1>
+
+  <form class="formulario-caja" method="post" novalidate>
+    {% csrf_token %}
+    {% include 'servicios/_errores.html' with errores=form.non_field_errors %}
+    {% for campo in form %}{% include 'servicios/_campo.html' %}{% endfor %}
+    <div class="acciones-formulario">
+      <button type="submit" class="btn btn-primario">{% if object %}Guardar cambios{% else %}Crear servicio{% endif %}</button>
+      <a class="btn" href="{% url 'servicios:panel_servicios' %}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

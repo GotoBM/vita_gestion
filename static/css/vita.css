@@ -1,0 +1,426 @@
+/* ==========================================================================
+   Vita Gestión · hoja de estilos principal
+   Identidad tomada de la presentación corporativa:
+   degradado verde azulado → negro, fondo verde oscuro, texto blanco,
+   tipografía Ubuntu y botones/etiquetas de contorno redondeado.
+   ========================================================================== */
+
+/* ---------- 1. Variables de diseño ---------- */
+:root {
+  --fondo: #13332d;            /* verde oscuro del fondo de la presentación */
+  --fondo-profundo: #0c231f;
+  --teal: #01a99c;             /* extremo claro del degradado */
+  --teal-claro: #5fe3d6;
+  --verde-medio: #007f76;
+  --verde-oscuro: #01534d;
+  --verde-casi-negro: #002a28;
+  --gris-logo: #a0a0a0;
+  --texto: #ffffff;
+  --texto-suave: rgba(255, 255, 255, .84);
+  --linea: rgba(255, 255, 255, .72);
+  --linea-suave: rgba(255, 255, 255, .16);
+  --superficie: rgba(0, 0, 0, .28);
+  --peligro: #ffb4ab;
+  --peligro-fondo: #8c1d18;
+
+  /* Degradado de la portada (teal → negro), tal como en el PDF */
+  --degradado-portada: linear-gradient(90deg, #01a99c 0%, #00988c 10%, #007f76 25%,
+                        #01534d 50%, #002a28 75%, #011110 90%, #000 100%);
+  /* Degradado de contenido (negro → teal). La zona clara queda al extremo
+     derecho para que el texto, que va a la izquierda, mantenga buen contraste. */
+  --degradado-contenido: linear-gradient(90deg, #000 0%, #011110 14%, #002a28 38%,
+                          #01534d 62%, #007f76 82%, #01a99c 100%);
+
+  --margen: clamp(1rem, 4vw, 2rem);
+  --ancho: 1120px;
+  --radio: 12px;
+
+  /* Medidas de los botones de icono de la barra superior.
+     --despl es la distancia entre el borde derecho de la página y el lápiz
+     superior: el lápiz pequeño de cada servicio usa el mismo valor para
+     quedar alineado con él. */
+  --slot: 48px;
+  --despl: var(--slot);
+}
+body.con-crear { --despl: calc(var(--slot) * 2); }
+
+/* ---------- 2. Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: "Ubuntu", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+main { flex: 1 0 auto; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--teal-claro); text-underline-offset: .2em; }
+a:hover { color: #fff; }
+
+h1, h2, h3 { margin: 0 0 .6em; line-height: 1.2; font-weight: 300; }
+h1 { font-size: clamp(2rem, 4.6vw, 3.4rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); }
+h3 { font-size: 1.25rem; font-weight: 500; }
+p { margin: 0 0 1em; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+:focus-visible {
+  outline: 2px solid var(--teal-claro);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.contenedor {
+  width: min(var(--ancho), 100% - 2 * var(--margen));
+  margin-inline: auto;
+}
+
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.saltar {
+  position: absolute; left: 1rem; top: -4rem;
+  background: #fff; color: #000; padding: .6rem 1rem; border-radius: 8px;
+  z-index: 100; transition: top .15s;
+}
+.saltar:focus { top: 1rem; }
+
+/* ---------- 3. Botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .6rem 1.5rem;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit; font-weight: 400; line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+.btn:hover { background: rgba(255, 255, 255, .14); color: #fff; }
+.btn-primario { background: var(--teal); border-color: var(--teal); color: #001a17; font-weight: 500; }
+.btn-primario:hover { background: var(--teal-claro); border-color: var(--teal-claro); color: #001a17; }
+.btn-peligro { background: var(--peligro-fondo); border-color: var(--peligro-fondo); color: #fff; font-weight: 500; }
+.btn-peligro:hover { background: #a8261f; border-color: #a8261f; }
+
+.btn-icono {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: none;
+  border: 1px solid var(--linea); border-radius: 50%;
+  background: transparent; color: #fff;
+  font-size: 1.1rem; line-height: 1;
+  text-decoration: none; cursor: pointer;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+.btn-icono:hover { background: rgba(255, 255, 255, .16); color: #fff; }
+.btn-icono[aria-current="page"] { background: #fff; color: #00231f; border-color: #fff; }
+.btn-icono.peligro:hover { background: var(--peligro-fondo); border-color: var(--peligro-fondo); }
+
+/* ---------- 4. Barra superior ---------- */
+.cabecera {
+  background: var(--fondo-profundo);
+  border-top: 1px solid var(--linea);       /* línea fina de la presentación */
+  border-bottom: 1px solid var(--linea-suave);
+}
+.cabecera-interior {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: .75rem 1.5rem;
+  padding-block: .75rem;
+}
+.marca { display: block; line-height: 0; }
+.marca img { height: 40px; width: auto; }
+
+.nav-principal { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; margin-right: auto; margin-left: 1rem; }
+.nav-principal a {
+  color: var(--texto-suave); text-decoration: none; padding: .35rem 0;
+  border-bottom: 2px solid transparent;
+}
+.nav-principal a:hover { color: #fff; }
+.nav-principal a[aria-current="page"] { color: #fff; border-bottom-color: var(--teal); }
+
+.acciones-cabecera { display: flex; align-items: center; gap: calc(var(--slot) - 40px); }
+
+/* Menú de la persona (sesión iniciada) sin JavaScript: <details> */
+.menu-usuario { position: relative; }
+.menu-usuario > summary { list-style: none; }
+.menu-usuario > summary::-webkit-details-marker { display: none; }
+.menu-usuario-panel {
+  position: absolute; right: 0; top: calc(100% + .6rem); z-index: 20;
+  width: min(18rem, 86vw);
+  padding: 1rem;
+  background: var(--fondo-profundo);
+  border: 1px solid var(--linea); border-radius: var(--radio);
+}
+.menu-usuario-panel p { margin-bottom: .75rem; font-size: .95rem; }
+.menu-usuario-panel form { margin: 0; }
+.menu-usuario-panel .btn { width: 100%; }
+
+/* ---------- 5. Mensajes del sistema ---------- */
+.mensajes { padding-top: 1.25rem; }
+.mensaje {
+  display: flex; gap: .75rem; align-items: flex-start;
+  margin: 0 0 .75rem; padding: .85rem 1.1rem;
+  background: var(--superficie);
+  border: 1px solid var(--linea-suave); border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  font-weight: 400;
+}
+.mensaje i { margin-top: .15rem; }
+.mensaje.error { border-left-color: var(--peligro); }
+.mensaje.error i { color: var(--peligro); }
+.mensaje.success i { color: var(--teal-claro); }
+
+/* ---------- 6. Bandas de color ---------- */
+.banda { padding-block: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 1rem; }
+.banda-solida { background: var(--fondo); }
+.banda-degradado { background: var(--degradado-contenido); }
+.banda + .banda-solida { border-top: 1px solid var(--linea-suave); }
+
+/* ---------- 7. Portada ---------- */
+.hero {
+  background: var(--degradado-portada);
+  padding-block: clamp(3.5rem, 11vw, 8rem);
+  text-align: center;
+}
+.hero-logo { width: min(560px, 82%); margin: 0 auto clamp(2.5rem, 7vw, 5rem); }
+.hero h1 { max-width: 26ch; margin-inline: auto; }
+.hero-sub { max-width: 52ch; margin: 0 auto 2.25rem; font-size: 1.15rem; color: var(--texto-suave); }
+.hero-acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+
+/* ---------- 8. Pilares ---------- */
+.pilares { display: grid; gap: clamp(1.5rem, 4vw, 2.75rem); }
+.pilar {
+  display: grid;
+  grid-template-columns: 64px minmax(13rem, 17rem) 1fr;
+  align-items: center; gap: 1rem 1.75rem;
+}
+.pilar img { width: 56px; height: auto; margin-inline: auto; }
+.pastilla {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center;
+  padding: .7rem 1.5rem;
+  border: 1px solid var(--linea); border-radius: 999px;
+  font-weight: 400; font-size: 1.1rem; line-height: 1.25;
+}
+.pilar p { margin: 0; font-size: 1.15rem; }
+
+/* ---------- 9. Misión y visión ---------- */
+.mision-vision { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.mision-vision h2 { margin-bottom: .35em; }
+.mision-vision article + article { margin-top: clamp(2rem, 5vw, 3.25rem); }
+.mision-vision p { max-width: 60ch; margin: 0; }
+.foto-vertical { width: 100%; max-height: 460px; object-fit: cover; border-radius: 4px; }
+
+/* ---------- 10. Equipo ---------- */
+.equipo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 6vw, 4.5rem); margin-top: 2rem; }
+.integrante img {
+  width: min(320px, 100%); aspect-ratio: 1; object-fit: cover; object-position: top;
+  border-radius: 4px; margin-bottom: 1.25rem;
+}
+.integrante h3 { font-size: 1.4rem; font-weight: 400; margin-bottom: .5rem; }
+.integrante ul li { padding-block: .1rem; color: var(--texto-suave); }
+
+/* ---------- 11. Beneficios y metodología ---------- */
+.lista-beneficios { display: grid; gap: .9rem; margin-top: 1.75rem; max-width: 62ch; }
+.lista-beneficios li { display: flex; gap: .85rem; align-items: flex-start; }
+.lista-beneficios i { color: var(--teal-claro); margin-top: .2rem; }
+
+.pasos { display: grid; gap: 1.75rem; margin-top: 1.75rem; max-width: 62ch; counter-reset: paso; }
+.pasos li {
+  position: relative; padding-left: 3.5rem; counter-increment: paso;
+}
+.pasos li::before {
+  content: counter(paso);
+  position: absolute; left: 0; top: 0;
+  display: grid; place-items: center;
+  width: 2.4rem; height: 2.4rem;
+  border: 1px solid var(--linea); border-radius: 50%;
+  font-weight: 500;
+}
+.pasos h3 { margin-bottom: .15rem; }
+.pasos p { margin: 0; color: var(--texto-suave); }
+
+/* ---------- 12. Servicios destacados y herramientas ---------- */
+.destacados-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 4.5rem); align-items: start; }
+.lista-destacados { display: grid; gap: .85rem; margin: 1.5rem 0 2rem; }
+.destacado {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .25rem 1rem;
+  padding: .9rem 1.4rem;
+  border: 1px solid var(--linea); border-radius: 999px;
+}
+.destacado strong { font-weight: 400; }
+.destacado span { color: var(--texto-suave); font-size: .95rem; }
+.herramientas { display: grid; gap: 2rem; justify-items: start; align-content: start; }
+.herramientas img { width: min(300px, 100%); }
+.vacio { color: var(--texto-suave); }
+
+/* ---------- 13. Contacto ---------- */
+.contacto-titulo { max-width: 24ch; }
+.contactos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; max-width: 48rem; margin-top: 2rem; }
+.contactos h3 { font-size: 1.15rem; font-weight: 400; margin-bottom: .4rem; }
+.contactos li { padding-block: .15rem; }
+.contactos a { color: #fff; }
+.contactos i { margin-right: .5rem; color: var(--teal-claro); }
+.subtitulo-contacto { font-size: 1.25rem; margin: 1.75rem 0 0; }
+
+/* ---------- 14. Pie de página ---------- */
+.pie { background: var(--fondo-profundo); border-top: 1px solid var(--linea-suave); padding-block: 2rem; }
+.pie-interior { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; }
+.pie img { height: 44px; width: auto; }
+.pie p { margin: 0; color: var(--texto-suave); font-size: .95rem; }
+.pie a { color: var(--texto-suave); }
+.pie-contacto { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
+
+/* ---------- 15. Catálogo ---------- */
+.pagina-catalogo { padding-bottom: clamp(2rem, 5vw, 4rem); }
+.encabezado-pagina { padding-block: clamp(2rem, 5vw, 3.5rem) 0; }
+.encabezado-pagina h1 { margin-bottom: .3em; }
+.encabezado-pagina p { color: var(--texto-suave); max-width: 60ch; }
+
+.buscador { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .85rem; margin: 1.5rem 0 1rem; }
+.buscador .btn { min-height: 2.9rem; }
+.buscador .campo-grupo { margin: 0; }
+.buscador .campo-grupo.crece { flex: 1 1 16rem; }
+.resumen-resultados { color: var(--texto-suave); margin: 0 0 1.75rem; }
+
+.grupo-categoria { margin-bottom: clamp(2rem, 5vw, 3.25rem); }
+.grupo-categoria > p { color: var(--texto-suave); max-width: 60ch; }
+.lista-servicios { border-top: 1px solid var(--linea-suave); }
+.servicio {
+  position: relative;
+  padding: 1rem calc(var(--despl) + 40px + .75rem) 1rem 0;
+  border-bottom: 1px solid var(--linea-suave);
+}
+.servicio h3 { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .6rem; margin: 0; font-weight: 400; font-size: 1.1rem; }
+.servicio .etiqueta { margin-left: 0; }
+.servicio p { margin: .25rem 0 0; color: var(--texto-suave); font-size: .98rem; }
+
+/* Lápiz pequeño: invisible hasta pasar el cursor por el servicio.
+   En pantallas táctiles (sin hover) queda siempre visible. */
+.btn-editar {
+  position: absolute; right: var(--despl); top: 50%; transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity .15s, background-color .15s, color .15s;
+}
+.servicio:hover .btn-editar,
+.servicio:focus-within .btn-editar,
+.btn-editar:focus-visible { opacity: 1; }
+@media (hover: none) { .btn-editar { opacity: 1; } }
+
+.etiqueta {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .1rem .7rem; margin-left: .5rem;
+  border: 1px solid var(--linea); border-radius: 999px;
+  font-size: .8rem; font-weight: 400; line-height: 1.5; vertical-align: middle;
+  white-space: nowrap;
+}
+.etiqueta.inactivo { border-style: dashed; color: var(--texto-suave); }
+.etiqueta.destacado { border-color: var(--teal-claro); }
+
+.estado-vacio {
+  padding: 2rem; text-align: center;
+  background: var(--superficie); border: 1px dashed var(--linea); border-radius: var(--radio);
+}
+
+/* ---------- 16. Panel de gestión ---------- */
+.panel { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem); }
+.panel-titulo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+.panel-titulo h1 { margin: 0; font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+
+.pestanas { display: flex; gap: .5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--linea-suave); }
+.pestanas a {
+  padding: .6rem 1.25rem; text-decoration: none; color: var(--texto-suave);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.pestanas a:hover { color: #fff; }
+.pestanas a[aria-current="page"] { color: #fff; border-bottom-color: var(--teal); font-weight: 400; }
+
+.tabla-scroll { overflow-x: auto; border: 1px solid var(--linea-suave); border-radius: var(--radio); background: var(--superficie); }
+.tabla { width: 100%; border-collapse: collapse; min-width: 38rem; }
+.tabla th, .tabla td { padding: .8rem 1rem; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--linea-suave); }
+.tabla thead th { font-weight: 500; font-size: .95rem; color: var(--texto-suave); background: rgba(0, 0, 0, .25); }
+.tabla tbody tr:last-child > * { border-bottom: 0; }
+.tabla tbody tr:hover { background: rgba(255, 255, 255, .04); }
+.tabla tbody th { font-weight: 400; }
+.tabla .etiqueta { margin-left: 0; }
+.tabla .etiqueta + .etiqueta { margin-left: .5rem; }
+.tabla td.num, .tabla th.num { text-align: right; }
+.tabla .col-acciones { width: 1%; white-space: nowrap; }
+.acciones-fila { display: flex; gap: .5rem; justify-content: flex-end; }
+.acciones-fila .btn-icono { width: 36px; height: 36px; font-size: 1rem; }
+.tabla .descripcion { color: var(--texto-suave); font-size: .95rem; max-width: 34ch; }
+
+/* ---------- 17. Formularios ---------- */
+.formulario-caja { max-width: 40rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--superficie); border: 1px solid var(--linea-suave); border-radius: var(--radio); }
+.campo-grupo { margin-bottom: 1.25rem; }
+.campo-grupo label { display: block; margin-bottom: .35rem; font-weight: 400; }
+.campo-grupo .ayuda { margin: .35rem 0 0; font-size: .9rem; color: var(--texto-suave); }
+
+input[type="text"], input[type="search"], input[type="number"], select, textarea, .campo {
+  width: 100%;
+  padding: .65rem .85rem;
+  background: var(--fondo-profundo); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .4); border-radius: 8px;
+  font: inherit; font-weight: 300;
+  color-scheme: dark;
+}
+input[type="search"], input[type="text"], input[type="number"], select { min-height: 2.9rem; }
+textarea { resize: vertical; min-height: 7rem; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--teal-claro); outline-offset: 2px; border-color: var(--teal-claro); }
+.campo-grupo.con-error input, .campo-grupo.con-error select, .campo-grupo.con-error textarea { border-color: var(--peligro); }
+
+.campo-check { display: flex; align-items: flex-start; gap: .7rem; }
+.campo-check input { width: 1.25rem; height: 1.25rem; margin-top: .25rem; accent-color: var(--teal); flex: none; }
+.campo-check label { margin: 0; }
+
+.errores { margin: .4rem 0 0; display: grid; gap: .2rem; color: var(--peligro); font-weight: 400; font-size: .95rem; }
+.errores li { display: flex; gap: .45rem; align-items: flex-start; }
+.errores i { margin-top: .2rem; }
+
+.acciones-formulario { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+
+.confirmacion { max-width: 36rem; }
+.confirmacion .aviso { padding: .85rem 1.1rem; margin-bottom: 1.25rem; border: 1px solid var(--peligro); border-radius: 8px; color: var(--peligro); font-weight: 400; }
+.nombre-objeto { font-weight: 500; }
+
+.volver { display: inline-flex; align-items: center; gap: .4rem; margin-bottom: 1.25rem; color: var(--texto-suave); }
+
+/* ---------- 18. Adaptación a móvil ---------- */
+@media (max-width: 760px) {
+  body { font-size: 1rem; }
+  .nav-principal { order: 3; width: 100%; margin: 0; }
+
+  /* En pantallas angostas el texto ocupa casi todo el ancho: se usa solo la
+     mitad oscura del degradado para mantener el contraste. */
+  .banda-degradado { background-size: 230% 100%; background-position: left center; }
+  .hero { background: linear-gradient(165deg, #007f76 0%, #01534d 38%, #002a28 72%, #000 100%); }
+
+  .pilar { grid-template-columns: 56px 1fr; }
+  .pilar p { grid-column: 1 / -1; padding-left: 0; }
+  .mision-vision, .destacados-grid, .equipo, .contactos { grid-template-columns: 1fr; }
+  .foto-vertical { display: none; }
+  .herramientas { grid-template-columns: 1fr 1fr; align-items: center; }
+  .servicio { padding-right: calc(34px + 1rem); }
+  .btn-editar { right: 0; }
+  .buscador .campo-grupo { flex: 1 1 100%; }
+  .buscador .btn { flex: 1 1 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

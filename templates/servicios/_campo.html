@@ -1,0 +1,20 @@
+{# Campo de formulario reutilizable: etiqueta, ayuda y errores #}
+{% if campo.field.widget.input_type == 'checkbox' %}
+<div class="campo-grupo{% if campo.errors %} con-error{% endif %}">
+  <div class="campo-check">
+    {{ campo }}
+    <div>
+      <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {% if campo.help_text %}<p class="ayuda">{{ campo.help_text }}</p>{% endif %}
+    </div>
+  </div>
+  {% include 'servicios/_errores.html' with errores=campo.errors %}
+</div>
+{% else %}
+<div class="campo-grupo{% if campo.errors %} con-error{% endif %}">
+  <label for="{{ campo.id_for_label }}">{{ campo.label }}{% if not campo.field.required %} <span class="ayuda">(opcional)</span>{% endif %}</label>
+  {{ campo }}
+  {% if campo.help_text %}<p class="ayuda">{{ campo.help_text }}</p>{% endif %}
+  {% include 'servicios/_errores.html' with errores=campo.errors %}
+</div>
+{% endif %}

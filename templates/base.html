@@ -1,0 +1,108 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Administración Profesional de Comunidades{% endblock %} | Vita Gestión</title>
+  <meta name="description" content="{% block descripcion %}Soluciones tecnológicas especializadas para la administración moderna de comunidades{% endblock %}">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2301534d'/%3E%3Crect x='10' y='13' width='13' height='13' fill='%23a0a0a0'/%3E%3Cpath d='M10 13V6h6' fill='none' stroke='%23a0a0a0' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{% static 'vendor/ubuntu/ubuntu.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'css/vita.css' %}">
+</head>
+{# 'con-crear' indica que el botón + está visible: así el lápiz pequeño de cada servicio queda alineado con el lápiz superior #}
+<body class="{% if not user.is_authenticated or perms.servicios.add_servicio %}con-crear{% endif %}">
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera-interior">
+      <a class="marca" href="{% url 'servicios:inicio' %}" aria-label="Vita Gestión, ir al inicio">
+        <img src="{% static 'img/logo-vita-pequeno.png' %}" alt="Vita Gestión · administración de comunidades" width="384" height="109">
+      </a>
+
+      <nav class="nav-principal" aria-label="Principal">
+        <a href="{% url 'servicios:inicio' %}"{% if request.path == '/' %} aria-current="page"{% endif %}>Inicio</a>
+        <a href="{% url 'servicios:catalogo' %}"{% if request.path == '/catalogo/' %} aria-current="page"{% endif %}>Servicios</a>
+        <a href="{% url 'servicios:inicio' %}#equipo">Equipo</a>
+        <a href="{% url 'servicios:inicio' %}#contacto">Contacto</a>
+      </nav>
+
+      <div class="acciones-cabecera">
+        {# Lápiz: sin sesión, la vista de gestión pide iniciar sesión y vuelve aquí #}
+        {% if not user.is_authenticated or perms.servicios.view_servicio %}
+        <a class="btn-icono" href="{% url 'servicios:panel_servicios' %}"
+           aria-label="Gestionar servicios" title="Gestionar servicios"
+           {% if request.path|slice:':7' == '/panel/' %}aria-current="page"{% endif %}>
+          <i class="bi bi-pencil" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        {% if not user.is_authenticated or perms.servicios.add_servicio %}
+        <a class="btn-icono" href="{% url 'servicios:servicio_crear' %}"
+           aria-label="Crear servicio" title="Crear servicio">
+          <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        {# Persona: lleva a iniciar sesión; con sesión abre un menú para cerrarla #}
+        {% if user.is_authenticated %}
+        <details class="menu-usuario">
+          <summary class="btn-icono" aria-label="Cuenta de {{ user.get_username }}" title="{{ user.get_username }}">
+            <i class="bi bi-person-check-fill" aria-hidden="true"></i>
+          </summary>
+          <div class="menu-usuario-panel">
+            <p>Sesión iniciada como <strong>{{ user.get_username }}</strong></p>
+            <form method="post" action="{% url 'salir' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-contorno">
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Cerrar sesión
+              </button>
+            </form>
+          </div>
+        </details>
+        {% else %}
+        <a class="btn-icono" href="{% url 'admin:login' %}?next={{ request.get_full_path|urlencode:'' }}"
+           aria-label="Iniciar sesión" title="Iniciar sesión">
+          <i class="bi bi-person" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="contenedor mensajes" aria-live="polite">
+    {% for mensaje in messages %}
+    <p class="mensaje {{ mensaje.tags }}">
+      <i class="bi {% if mensaje.level_tag == 'error' %}bi-exclamation-triangle-fill{% else %}bi-check-circle-fill{% endif %}" aria-hidden="true"></i>
+      <span>{{ mensaje }}</span>
+    </p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <main id="contenido">
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor pie-interior">
+      <img src="{% static 'img/logo-vita-pequeno.png' %}" alt="Vita Gestión" width="384" height="109">
+      <p class="pie-contacto">
+        <a href="mailto:pablo@vitagestion.com">pablo@vitagestion.com</a>
+        <a href="mailto:javier@vitagestion.com">javier@vitagestion.com</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /* Cierra el menú de la persona al hacer clic fuera o al presionar Escape */
+    (function () {
+      var menu = document.querySelector('.menu-usuario');
+      if (!menu) return;
+      document.addEventListener('click', function (e) { if (!menu.contains(e.target)) menu.open = false; });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') menu.open = false; });
+    })();
+  </script>
+</body>
+</html>

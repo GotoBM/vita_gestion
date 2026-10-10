@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Vita Gestión · estilo del administrador de Django (y de su pantalla de login)
+   Sobrescribe las variables de color del admin con la paleta de la empresa.
+   ========================================================================== */
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --primary: #01534d;
+  --secondary: #002a28;
+  --accent: #01a99c;
+  --primary-fg: #fff;
+
+  --header-color: #fff;
+  --header-branding-color: #fff;
+  --header-bg: #002a28;
+  --header-link-color: #fff;
+
+  --breadcrumbs-fg: #c9f1ed;
+  --breadcrumbs-link-fg: #fff;
+  --breadcrumbs-bg: #01534d;
+
+  --link-fg: #00695f;
+  --link-hover-color: #004a43;
+  --link-selected-fg: #00695f;
+
+  --button-bg: #01534d;
+  --button-hover-bg: #007f76;
+  --default-button-bg: #01534d;
+  --default-button-hover-bg: #007f76;
+  --object-tools-bg: #01534d;
+  --object-tools-hover-bg: #007f76;
+
+  --font-family-primary: "Ubuntu", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+
+body, input, select, textarea, button { font-family: var(--font-family-primary); }
+
+#header {
+  background: linear-gradient(90deg, #002a28 0%, #01534d 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, .25);
+}
+#branding h1 a { display: inline-flex; align-items: center; gap: .75rem; text-decoration: none; }
+#branding img { height: 34px; width: auto; }
+#branding span { color: #fff; font-weight: 300; font-size: 1.05rem; }
+
+/* Pantalla de inicio de sesión: mismo degradado que la portada del sitio */
+body.login {
+  background: linear-gradient(90deg, #01a99c 0%, #00988c 10%, #007f76 25%, #01534d 50%, #002a28 75%, #011110 90%, #000 100%);
+  min-height: 100vh;
+}
+.login #header {
+  background: linear-gradient(90deg, #002a28 0%, #01534d 100%);
+  border-bottom: 0; justify-content: center; padding: 1.25rem 1rem;
+}
+.login #branding h1 { margin: 0; }
+.login #branding img { height: 44px; }
+.login #container {
+  background: #fff; border: 0; border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
+  overflow: hidden;
+}
+.login .submit-row input[type="submit"] {
+  background: #01a99c; color: #001a17; font-weight: 500;
+  border-radius: 999px; padding: .6rem 1.5rem; border: 0;
+}
+.login .submit-row input[type="submit"]:hover { background: #5fe3d6; }
+.login .form-row label { font-weight: 500; }

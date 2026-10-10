@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Servicios{% endblock %}
+
+{% block contenido %}
+<div class="contenedor pagina-catalogo">
+
+  <div class="encabezado-pagina">
+    <h1>Servicios</h1>
+    <p>Soluciones tecnológicas para la gestión financiera, operativa y comunicacional de su comunidad.</p>
+  </div>
+
+  {# ---------- Buscador y filtro ---------- #}
+  <form class="buscador" method="get" action="{% url 'servicios:catalogo' %}" role="search">
+    <div class="campo-grupo crece">
+      <label for="q">Buscar servicios</label>
+      <input type="search" id="q" name="q" value="{{ q }}" placeholder="Ej.: proveedores, gastos comunes">
+    </div>
+    <div class="campo-grupo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" name="categoria">
+        <option value="">Todas las categorías</option>
+        {% for categoria in categorias %}
+        <option value="{{ categoria.pk }}"{% if categoria.pk == categoria_sel %} selected{% endif %}>{{ categoria.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primario"><i class="bi bi-search" aria-hidden="true"></i> Buscar</button>
+    {% if q or categoria_sel %}
+    <a class="btn" href="{% url 'servicios:catalogo' %}">Limpiar</a>
+    {% endif %}
+  </form>
+
+  <p class="resumen-resultados" aria-live="polite">
+    {% if total == 1 %}1 servicio encontrado{% else %}{{ total }} servicios encontrados{% endif %}
+  </p>
+
+  {# ---------- Servicios agrupados por categoría ---------- #}
+  {% for grupo in grupos %}
+  <section class="grupo-categoria" aria-labelledby="categoria-{{ grupo.categoria.pk }}">
+    <h2 id="categoria-{{ grupo.categoria.pk }}">{{ grupo.categoria.nombre }}</h2>
+    <p>{{ grupo.categoria.descripcion }}</p>
+
+    <ul class="lista-servicios">
+      {% for servicio in grupo.servicios %}
+      <li class="servicio">
+        <h3>
+          {{ servicio.nombre }}
+          {% if servicio.destacado %}<span class="etiqueta destacado"><i class="bi bi-star-fill" aria-hidden="true"></i> Destacado</span>{% endif %}
+        </h3>
+        {% if servicio.descripcion %}<p>{{ servicio.descripcion }}</p>{% endif %}
+
+        {# Lápiz pequeño: aparece al pasar el cursor; sin sesión, pide iniciar sesión primero #}
+        {% if not user.is_authenticated or perms.servicios.change_servicio %}
+        <a class="btn-icono btn-editar" href="{% url 'servicios:servicio_editar' servicio.pk %}"
+           aria-label="Editar el servicio {{ servicio.nombre }}" title="Editar servicio">
+          <i class="bi bi-pencil" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% empty %}
+  <div class="estado-vacio">
+    <p>No se encontraron servicios con esos filtros.</p>
+    <a class="btn" href="{% url 'servicios:catalogo' %}">Ver todos los servicios</a>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
